@@ -1,23 +1,25 @@
-from functions.get_files_info import get_files_info
+from functions.get_files_content import get_file_content
+from config import MAX_CHARS
 
+def test_lorem_truncation():
+    content = get_file_content("calculator", "lorem.txt")
+    assert len(content) > MAX_CHARS
+    assert f'truncated at {MAX_CHARS} characters' in content
+    print("Lorem truncation test passed")
 
-def main():
-    print("Result for current directory:")
-    print(get_files_info("calculator", "."))
-    print()
+def run_manual_tests():
+    print("\n--- main.py ---")
+    print(get_file_content("calculator", "main.py"))
 
-    print("Result for 'pkg' directory:")
-    print(get_files_info("calculator", "pkg"))
-    print()
+    print("\n--- pkg/calculator.py ---")
+    print(get_file_content("calculator", "pkg/calculator.py"))
 
-    print("Result for '/bin' directory:")
-    print(get_files_info("calculator", "/bin"))
-    print()
+    print("\n--- /bin/cat (should error) ---")
+    print(get_file_content("calculator", "/bin/cat"))
 
-    print("Result for '../' directory:")
-    print(get_files_info("calculator", "../"))
-    print()
-
+    print("\n--- pkg/does_not_exist.py (should error) ---")
+    print(get_file_content("calculator", "pkg/does_not_exist.py"))
 
 if __name__ == "__main__":
-    main()
+    test_lorem_truncation()
+    run_manual_tests()
